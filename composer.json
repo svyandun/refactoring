@@ -1,0 +1,27 @@
+{
+    "name": "svyandun/refactoring",
+    "description": "Refactoring",
+    "authors": [
+        {
+            "name": "Sebastián Yandún",
+            "email": "svyandun@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+    	"phpunit/phpunit" : "4.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "Refactoring\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Refactoring\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}
