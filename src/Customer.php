@@ -27,26 +27,7 @@ class Customer
         $frequentRenterPoints = 0;
         $result = "Rental Record for " . $this->getName() . "\n";
         foreach ($this->rentals as $rental) {
-            $thisAmount = 0;
-
-            // determine amounts for each line
-            switch ($rental->getMovie()->getPriceCode()) {
-                case Movie::REGULAR:
-                    $thisAmount += 2;
-                    if ($rental->getDaysRented() > 2) {
-                        $thisAmount += ($rental->getDaysRented() - 2) * 1.5;
-                    }
-                    break;
-                case Movie::NEW_RELEASE:
-                    $thisAmount += $rental->getDaysRented() * 3;
-                    break;
-                case Movie::CHILDRENS:
-                    $thisAmount += 1.5;
-                    if ($rental->getDaysRented() > 3) {
-                        $thisAmount += ($rental->getDaysRented() - 3) * 1.5;
-                    }
-                    break;
-            }
+            $thisAmount = $this->amountFor($rental);
 
             // add frequent renter points
             $frequentRenterPoints++;
@@ -64,6 +45,30 @@ class Customer
         // add footer lines
         $result .= "Amount owed is " . $totalAmount . "\n";
         $result .= "You earned " . $frequentRenterPoints . " frequent renter points";
+
+        return $result;
+    }
+
+    public function amountFor(Rental $rental)
+    {
+        $result = 0;
+        switch ($rental->getMovie()->getPriceCode()) {
+            case Movie::REGULAR:
+                $result += 2;
+                if ($rental->getDaysRented() > 2) {
+                    $result += ($rental->getDaysRented() - 2) * 1.5;
+                }
+                break;
+            case Movie::NEW_RELEASE:
+                $result += $rental->getDaysRented() * 3;
+                break;
+            case Movie::CHILDRENS:
+                $result += 1.5;
+                if ($rental->getDaysRented() > 3) {
+                    $result += ($rental->getDaysRented() - 3) * 1.5;
+                }
+                break;
+        }
 
         return $result;
     }
