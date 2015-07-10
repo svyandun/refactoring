@@ -27,20 +27,11 @@ class Customer
         $frequentRenterPoints = 0;
         $result = "Rental Record for " . $this->getName() . "\n";
         foreach ($this->rentals as $rental) {
-            $thisAmount = $rental->getCharge();
-
-            // add frequent renter points
-            $frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            if ($rental->getMovie()->getPriceCode() == Movie::NEW_RELEASE &&
-                $rental->getDaysRented() > 1
-            ) {
-                $frequentRenterPoints++;
-            }
+            $frequentRenterPoints += $rental->getFrequentRenterPoints($rental);
 
             // show figures for this rental
-            $result .= "\t" . $rental->getMovie()->getTitle() . "\t" . $thisAmount . "\n";
-            $totalAmount += $thisAmount;
+            $result .= "\t" . $rental->getMovie()->getTitle() . "\t" . $rental->getCharge() . "\n";
+            $totalAmount += $rental->getCharge();
         }
         // add footer lines
         $result .= "Amount owed is " . $totalAmount . "\n";

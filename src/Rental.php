@@ -39,6 +39,16 @@ class Rental
         return $result;
     }
 
+    public function getFrequentRenterPoints()
+    {
+        if ($this->getMovie()->getPriceCode() == Movie::NEW_RELEASE &&
+            $this->getDaysRented() > 1
+        ) {
+            return 2;
+        }
+        return 1;
+    }
+
     /**
      * @return Movie
      */
