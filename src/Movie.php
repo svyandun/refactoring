@@ -13,7 +13,7 @@ class Movie
     /**
      * @var Price
      */
-    private $priceCode;
+    private $price;
 
     public function __construct($title, $priceCode)
     {
@@ -61,20 +61,20 @@ class Movie
 
     public function getPriceCode()
     {
-        return $this->priceCode->getPriceCode();
+        return $this->price->getPriceCode();
     }
 
     public function setPriceCode($priceCode)
     {
         switch ($priceCode) {
             case self::REGULAR:
-                $this->priceCode = new RegularPrice();
+                $this->price = new RegularPrice();
                 break;
             case self::CHILDRENS:
-                $this->priceCode = new ChildrensPrice();
+                $this->price = new ChildrensPrice();
                 break;
             case self::NEW_RELEASE:
-                $this->priceCode = new NewReleasePrice();
+                $this->price = new NewReleasePrice();
                 break;
             default:
                 throw new InvalidArgumentException('Incorrect Price Code');
