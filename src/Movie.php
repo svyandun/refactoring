@@ -1,6 +1,8 @@
 <?php
 namespace Refactoring;
 
+use InvalidArgumentException;
+
 class Movie
 {
     const CHILDRENS = 2;
@@ -8,12 +10,15 @@ class Movie
     const NEW_RELEASE = 1;
 
     private $title;
+    /**
+     * @var Price
+     */
     private $priceCode;
 
     public function __construct($title, $priceCode)
     {
         $this->title = $title;
-        $this->priceCode = $priceCode;
+        $this->setPriceCode($priceCode);
     }
 
     public function getCharge($daysRented)
@@ -45,6 +50,7 @@ class Movie
         if ($this->getPriceCode() == Movie::NEW_RELEASE && $daysRented > 1) {
             return 2;
         }
+
         return 1;
     }
 
@@ -55,11 +61,23 @@ class Movie
 
     public function getPriceCode()
     {
-        return $this->priceCode;
+        return $this->priceCode->getPriceCode();
     }
 
     public function setPriceCode($priceCode)
     {
-        $this->priceCode = $priceCode;
+        switch ($priceCode) {
+            case self::REGULAR:
+                $this->priceCode = new RegularPrice();
+                break;
+            case self::CHILDRENS:
+                $this->priceCode = new ChildrensPrice();
+                break;
+            case self::NEW_RELEASE:
+                $this->priceCode = new NewReleasePrice();
+                break;
+            default:
+                throw new InvalidArgumentException('Incorrect Price Code');
+        }
     }
 }
